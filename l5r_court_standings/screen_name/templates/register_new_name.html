@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block message %}
+
+  {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+  {% endif %}
+
+{% endblock message %}
+
+{% block content %}
+
+<p>Type username here</p>
+
+<form action="{% url 'screennames:register_username' %}" method="post">
+  {% csrf_token %}
+  {{ register_form.as_p }}
+  <input type="submit" value="Add new username"/>
+</form>
+
+{% endblock content %}
