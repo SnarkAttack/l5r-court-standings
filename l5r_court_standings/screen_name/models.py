@@ -9,7 +9,12 @@ class ScreenNameManager(models.Manager):
         return new_username
 
 class ScreenName(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.IntegerField(null=True)
     screen_name = models.CharField(max_length=32, unique=True)
 
     objects = ScreenNameManager()
+
+    @classmethod
+    def get_name_from_id(cls, id):
+        name_obj = ScreenName.objects.get(id=id)
+        return name_obj.screen_name

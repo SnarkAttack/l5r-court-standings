@@ -7,6 +7,8 @@ from django.db import IntegrityError
 
 from ..forms.register_new_screen_name import RegisterNewScreenNameForm
 
+from screen_name.models import ScreenName
+
 
 @login_required(login_url=settings.LOGIN_URL)
 def post(request):
@@ -23,6 +25,10 @@ def register(request):
             obj.save()
             return redirect('screennames:registered_names')
         else:
-            print 'Already exists'
-            register_username_form = RegisterNewScreenNameForm()
-            return render(request, 'register_new_name.html', {'error_message': 'ALREADY EXISTS', 'register_form': register_username_form})
+            screen_name_list = ScreenName.objects.filter(screen_name=request.POST['screen_name'])
+            if len(screen_name_list) is 1 and screen_name_list[0].user_id is None:
+                screen_name_list.update(user_id=request.user.id)
+                return redirect('screennames:registered_names')
+            else:
+                register_username_form = RegisterNewScreenNameForm()
+                return render(request, 'register_new_name.html', {'error_message': 'ALREADY EXISTS', 'register_form': register_username_form})

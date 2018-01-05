@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p><a href="/games/record/">Record Game</a></p>
+
+{% if game_details_list %}
+    <ul>
+    {% for game in game_details_list %}
+        <li>{{ game.player1 }} vs. {{ game.player2 }}: {{game.winner}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No games are available.</p>
+{% endif %}
+
+{% endblock content %}
